@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, I18nManager } from 'react-native';
+import { StyleSheet, I18nManager, Linking } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -19,16 +19,20 @@ export default function TabTwoScreen(props: any) {
     props.navigation.navigate('AddressList')
   }
 
+  const goToSetting = () => {
+    Linking.openURL('app-settings://notification/myapp')
+  }
+
   const ActionButtons = () => {
     return (
       <>
         <TouchableIcon style={styles.button} onSelect={toggleRtl}>
           <Text style={styles.title}>Toggle RTL</Text>
         </TouchableIcon>
-        <TouchableIcon style={styles.button} onSelect={null}>
+        <TouchableIcon style={styles.button} onSelect={goToSetting}>
           <Text style={styles.title}>Enable Push Notifications</Text>
         </TouchableIcon>
-        <TouchableIcon style={styles.button} onSelect={null}>
+        <TouchableIcon style={styles.button} onSelect={goToSetting}>
           <Text style={styles.title}>Enable Locations</Text>
         </TouchableIcon>
         <TouchableIcon style={styles.button} onSelect={goToAddress}>

@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
+import * as Notifications from 'expo-notifications';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
@@ -12,6 +12,10 @@ import LanguageDirectionProvider from './state/languageDirectionProvider';
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    Notifications.requestPermissionsAsync().then(() => {})
+  })
 
   if (!isLoadingComplete) {
     return null;
