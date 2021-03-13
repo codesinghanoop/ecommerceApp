@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import * as React from 'react';
 import { Text } from 'react-native';
+import AddAddress from '../screens/AddAddress';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import HomeScreen from '../screens/TabOneScreen';
@@ -12,6 +13,7 @@ import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import TouchableIcon from '../components/TouchableIcon';
 import { useNavigation } from '@react-navigation/native';
 import { useDirection } from '../state/hooks';
+import AddressList from '../screens/AddressList';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -88,12 +90,35 @@ function TabOneNavigator() {
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
+  const navigation = useNavigation()
+  const goToAddAddress = () => {
+    navigation.navigate('AddAddress')
+  }
   return (
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        options={{ headerTitle: 'Profile' }}
+      />
+      <TabTwoStack.Screen
+        name="AddressList"
+        component={AddressList}
+        options={{ 
+          headerTitle: 'Address List',
+          headerRight: () => (
+            <TouchableIcon onSelect={goToAddAddress}>
+              <Text>
+                  <Ionicons size={30} name='add' />
+              </Text>
+            </TouchableIcon>
+          ),
+        }}
+      />
+      <TabTwoStack.Screen
+        name="AddAddress"
+        component={AddAddress}
+        options={{ headerTitle: 'Add Address' }}
       />
     </TabTwoStack.Navigator>
   );

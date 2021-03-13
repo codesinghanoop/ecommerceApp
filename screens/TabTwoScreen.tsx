@@ -7,12 +7,16 @@ import { Text, View } from '../components/Themed';
 import TouchableIcon from '../components/TouchableIcon';
 import { useDirection } from '../state/hooks';
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen(props: any) {
 
   const { toggleDirection } = useDirection()
 
   const toggleRtl = () => {
     toggleDirection()
+  }
+
+  const goToAddress = () => {
+    props.navigation.navigate('AddressList')
   }
 
   const ActionButtons = () => {
@@ -27,7 +31,7 @@ export default function TabTwoScreen() {
         <TouchableIcon style={styles.button} onSelect={null}>
           <Text style={styles.title}>Enable Locations</Text>
         </TouchableIcon>
-        <TouchableIcon style={styles.button} onSelect={null}>
+        <TouchableIcon style={styles.button} onSelect={goToAddress}>
           <Text style={styles.title}>Addresses</Text>
         </TouchableIcon>
       </>

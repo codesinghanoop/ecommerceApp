@@ -20,6 +20,19 @@ export default function CartDetails(props : any) {
   }
 
   const getPrice = (price : Number, quantity: Number) => price*quantity
+  const keysArr = Object.keys(selectedProductItems);
+  const isCartEmpty = _.filter(keysArr, (productKey) => selectedProductItems[productKey].length > 0).length === 0
+
+  if(isCartEmpty) {
+    return (
+      <View style={[styles.emptyContainer, { direction }]}>
+        <Text>Cart is Empty</Text>
+        <Text>
+          <MaterialIcons size={30} name="hourglass-empty" />
+        </Text>
+      </View>
+    )
+  }
 
   return (
       <ScrollView style={styles.container}>
@@ -93,5 +106,10 @@ const styles = StyleSheet.create({
   },
   price: {
       fontWeight: 'bold',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
