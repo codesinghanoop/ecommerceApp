@@ -1,15 +1,45 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, I18nManager } from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import Colors from '../constants/Colors';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import TouchableIcon from '../components/TouchableIcon';
+import { useDirection } from '../state/hooks';
 
 export default function TabTwoScreen() {
+
+  const { toggleDirection } = useDirection()
+
+  const toggleRtl = () => {
+    toggleDirection()
+  }
+
+  const ActionButtons = () => {
+    return (
+      <>
+        <TouchableIcon style={styles.button} onSelect={toggleRtl}>
+          <Text style={styles.title}>Toggle RTL</Text>
+        </TouchableIcon>
+        <TouchableIcon style={styles.button} onSelect={null}>
+          <Text style={styles.title}>Enable Push Notifications</Text>
+        </TouchableIcon>
+        <TouchableIcon style={styles.button} onSelect={null}>
+          <Text style={styles.title}>Enable Locations</Text>
+        </TouchableIcon>
+        <TouchableIcon style={styles.button} onSelect={null}>
+          <Text style={styles.title}>Addresses</Text>
+        </TouchableIcon>
+      </>
+    )
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>
+        <MaterialIcons size={120} name='face' />
+      </Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
+      {ActionButtons()}
     </View>
   );
 }
@@ -18,15 +48,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#ffff'
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
   },
+  button: {
+    width: '60%',
+    height: 40,
+    backgroundColor: Colors.light.tabIconSelected,
+    marginBottom: 18,
+    borderRadius: 3,
+    justifyContent: 'center',
+  }
 });

@@ -1,32 +1,37 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
 import * as React from 'react';
-
+import { Text } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
+import HomeScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import ProfileDetails from '../screens/ProfileDetails';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TouchableIcon from '../components/TouchableIcon';
+import { useNavigation } from '@react-navigation/native';
+import { useDirection } from '../state/hooks';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const { direction } = useDirection()
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      initialRouteName="Home"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: { direction: direction === 'rtl' ? 'rtl' : 'ltr' } }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Profile"
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
@@ -47,12 +52,34 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
+  const navigation = useNavigation()
+  const { direction } = useDirection()
+  const goToCart = () => {
+    navigation.navigate("CartDetails")
+  }
+
   return (
-    <TabOneStack.Navigator>
+    <TabOneStack.Navigator
+        screenOptions={{
+          gestureDirection: direction === 'ltr' ? 'horizontal' : 'horizontal-inverted',
+          headerRight: () => (
+            <TouchableIcon onSelect={goToCart}>
+              <Text>
+                  <Ionicons size={30} name='cart-outline' />
+              </Text>
+            </TouchableIcon>
+          ),
+        }}
+    >
       <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        name="Tabs"
+        component={HomeScreen}
+        options={{ headerTitle: 'Home' }}
+      />
+      <TabOneStack.Screen 
+        name="profileDetails"
+        component={ProfileDetails}
+        options={{ headerTitle: 'Profile Details', headerStyle: { direction: direction === 'rtl' ? 'rtl' : 'ltr' } }}
       />
     </TabOneStack.Navigator>
   );
